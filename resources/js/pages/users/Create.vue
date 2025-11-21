@@ -12,11 +12,21 @@ import UserController from '@/actions/App/Http/Controllers/UserController';
 
 import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSet } from '@/components/ui/field'
 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+
+import { can } from '@/lib/can';
+
 interface Props {
-    users: Array<any>;
+    roles: Array<any>;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -79,6 +89,25 @@ const breadcrumbs: BreadcrumbItem[] = [
                                 <Input id="password_confirmation" placeholder="Password Confirmation" required name="password_confirmation" type="password"/>
                                 <FieldDescription v-if="errors.password_confirmation" class="text-red-500">
                                     {{ errors.password_confirmation }}
+                                </FieldDescription>
+                            </Field>
+                            <Field>
+                                <FieldLabel for="role">
+                                    Role
+                                </FieldLabel>
+                                <Select name="role" :disabled="!can('users.edit.roles')">
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select role"/>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectLabel>Roles</SelectLabel>
+                                            <SelectItem v-for="role in props.roles" :key="role.id" :value="role.id">{{ role.name }}</SelectItem>
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                                <FieldDescription v-if="errors.role" class="text-red-500">
+                                    {{ errors.role }}
                                 </FieldDescription>
                             </Field>
                         </FieldGroup>

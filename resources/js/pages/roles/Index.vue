@@ -12,14 +12,13 @@ import {
   Item,
   ItemActions,
   ItemContent,
-  ItemDescription,
   ItemTitle,
 } from '@/components/ui/item'
 import { ref, computed } from 'vue'
 import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput, InputGroupText, InputGroupTextarea } from '@/components/ui/input-group'
 
 interface Props {
-    users: Array<any>;
+    roles: Array<any>;
 }
 
 const props = defineProps<Props>();
@@ -30,22 +29,20 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: dashboard().url,
     },
     {
-        title: 'Users',
-        href: '/users',
+        title: 'Roles',
+        href: '/roles',
     },
 ];
 
 const searchQuery = ref('')
 
-const filteredUsers = computed(() => {
-  if (!searchQuery.value) return props.users
+const filteredRoles = computed(() => {
+  if (!searchQuery.value) return props.roles
   
   const query = searchQuery.value.toLowerCase()
-  return props.users.filter(user => 
-    user.name?.toLowerCase().includes(query) ||
-    user.email?.toLowerCase().includes(query) ||
-    user.roles.some((role: any) => role.name?.toLowerCase().includes(query))
-    )
+  return props.roles.filter(role => 
+    role.name?.toLowerCase().includes(query)
+  )
 })
 
 </script>
@@ -55,8 +52,8 @@ const filteredUsers = computed(() => {
     <AppLayout :breadcrumbs="breadcrumbs">
         <div class="mx-auto flex h-full w-full max-w-6xl flex-1 flex-col p-4">
 
-            <Heading title="Users" description="List of your users.">
-                <Link href="/users/create">
+            <Heading title="Roles" description="List of your roles.">
+                <Link href="/roles/create">
                     <Button variant="outline" size="sm">Create</Button>
                 </Link>
             </Heading>
@@ -74,20 +71,17 @@ const filteredUsers = computed(() => {
                     </InputGroupAddon>
                 </InputGroup>
                 <div class="text-sm">
-                    Showing {{ filteredUsers.length }} of {{ users.length }} users
+                    Showing {{ filteredRoles.length }} of {{ roles.length }} roles
                 </div>
             </div>
 
             <div class="grid gap-2">
-                <Item variant="outline" v-for="user in filteredUsers" :key="user.id" as-child>
-                    <Link :href="`/users/${user.id}`">
-                        <CircleDot v-if="user.status == 'active'" color="green" :size="10"/>
-                        <CircleDot v-if="user.status != 'active'" color="orange" :size="10"/>
+                <Item variant="outline" v-for="role in filteredRoles" :key="role.id" as-child>
+                    <Link :href="`/roles/${role.id}`">
+                        <CircleDot v-if="role.status == 'active'" color="green" :size="10"/>
+                        <CircleDot v-if="role.status != 'active'" color="orange" :size="10"/>
                         <ItemContent>
-                            <ItemTitle>{{ user.name }}</ItemTitle>
-                            <Badge variant="secondary" class="text-xs">
-                                {{ user.roles[0]?.name }}
-                            </Badge>
+                            <ItemTitle>{{ role.name }}</ItemTitle>
                         </ItemContent>
                         <ItemActions>
                             <ChevronRightIcon class="size-4" />
@@ -95,8 +89,8 @@ const filteredUsers = computed(() => {
                     </Link>
                 </Item>
 
-                <div v-if="filteredUsers.length === 0" class="text-center py-8 text-gray-500">
-                    No users found.
+                <div v-if="filteredRoles.length === 0" class="text-center py-8 text-gray-500">
+                    No roles found.
                 </div>
             </div>
         </div>

@@ -23,12 +23,17 @@ import {
   Select,
   SelectContent,
   SelectItem,
+  SelectGroup,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
 
+import { can } from '@/lib/can';
+
 interface Props {
     user: any;
+    roles: Array<any>;
 }
 
 const props = defineProps<Props>();
@@ -71,6 +76,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                                     required
                                     name="name"
                                     :default-value="props.user.name"
+                                    :disabled="!can('users.edit')"
                                 />
                                 <FieldDescription v-if="errors.name" class="text-red-500">
                                     {{ errors.name }}
@@ -86,6 +92,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                                     required
                                     name="email"
                                     :default-value="props.user.email"
+                                    :disabled="!can('users.edit')"
                                 />
                                 <FieldDescription v-if="errors.email" class="text-red-500">
                                     {{ errors.email }}
@@ -95,12 +102,15 @@ const breadcrumbs: BreadcrumbItem[] = [
                                 <FieldLabel for="role">
                                     Role
                                 </FieldLabel>
-                                <Select>
+                                <Select :default-value="props.user?.roles[0].id" name="role" :disabled="!can('users.edit.roles')">
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select role"/>
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="x">X</SelectItem>
+                                        <SelectGroup>
+                                            <SelectLabel>Roles</SelectLabel>
+                                            <SelectItem v-for="role in props.roles" :key="role.id" :value="role.id">{{ role.name }}</SelectItem>
+                                        </SelectGroup>
                                     </SelectContent>
                                 </Select>
                                 <FieldDescription v-if="errors.role" class="text-red-500">
@@ -110,7 +120,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                         </FieldGroup>
                     </FieldSet>
                     <Field orientation="horizontal">
-                        <Button type="submit">
+                        <Button type="submit" :disabled="!can('users.edit')">
                             <Spinner class="animate-spin" v-if="processing"/>
                             Save
                         </Button>
@@ -122,7 +132,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                     </Field>
                 </FieldGroup>
             </Form>
-            <DeleteUser :user="props.user"/>
+            <DeleteUser :user="props.user" v-if="can('users.delete')"/>
         </div>
     </AppLayout>
 </template>

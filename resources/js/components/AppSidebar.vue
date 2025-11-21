@@ -38,6 +38,12 @@ const mainNavItems: NavItem[] = [
         icon: LayoutDashboard,
         permission: 'view.users-menu',
     },
+    {
+        title: 'Roles',
+        href: '/roles',
+        icon: LayoutDashboard,
+        permission: 'view.roles-menu',
+    },
 ];
 
 const footerNavItems: NavItem[] = [
