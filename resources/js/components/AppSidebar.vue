@@ -27,12 +27,6 @@ const mainNavItems: NavItem[] = [
         permission: 'view.dashboard-menu',
     },
     {
-        title: 'Vehicles',
-        href: '/vehicles',
-        icon: LayoutDashboard,
-        permission: 'view.vehicles-menu',
-    },
-    {
         title: 'Users',
         href: '/users',
         icon: LayoutDashboard,

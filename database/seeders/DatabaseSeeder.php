@@ -27,21 +27,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]); */
 
-        DB::table('vehicles')->insert([
-            [
-                'license_plate' => 'OHZ F 123',
-                'description' => 'HLF 20',
-            ],
-            [
-                'license_plate' => 'OHZ F 456',
-                'description' => 'TLF 16/25',
-            ],
-            [
-                'license_plate' => 'OHZ F 789',
-                'description' => 'RW 1',
-            ]
-        ]);
-
         $superAdminUserId = DB::table('users')->insertGetId([
             'name' => 'Jan Kück',
             'email' => 'jankuek@gmail.com',
