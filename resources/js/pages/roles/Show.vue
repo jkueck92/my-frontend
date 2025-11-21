@@ -34,6 +34,7 @@ import { Label } from '@/components/ui/label'
 
 import { can } from '@/lib/can';
 import { computed } from 'vue';
+import FormActions from '@/components/custom/FormActions.vue';
 
 interface Props {
     role: any;
@@ -121,17 +122,7 @@ const isPermissionAssigned = (permissionId: string) => {
 
                         </FieldGroup>
                     </FieldSet>
-                    <Field orientation="horizontal">
-                        <Button type="submit" :disabled="!can('roles.edit')">
-                            <Spinner class="animate-spin" v-if="processing"/>
-                            Save
-                        </Button>
-                        <Link href="/roles">
-                            <Button variant="outline" type="button">
-                                Back
-                            </Button>
-                        </Link>
-                    </Field>
+                    <FormActions :processing="processing" :can-edit-permission="'roles.edit'" back-href="/roles"/>
                 </FieldGroup>
             </Form>
             <DeleteRole :role="props.role" v-if="can('roles.delete')"/>

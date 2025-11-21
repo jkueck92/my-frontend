@@ -72,7 +72,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                         </Button>
                         <Link href="/vehicles">
                             <Button variant="outline" type="button">
-                                Cancel
+                                Back
                             </Button>
                         </Link>
                     </Field>

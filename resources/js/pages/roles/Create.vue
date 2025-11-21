@@ -2,28 +2,17 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem } from '@/types';
-import { Form, Link} from '@inertiajs/vue3';
+import { Form } from '@inertiajs/vue3';
 import Heading from '@/components/Heading.vue';
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Spinner } from '@/components/ui/spinner'
 
 import RoleController from '@/actions/App/Http/Controllers/RoleController';
 
 import { Field, FieldDescription, FieldGroup, FieldLabel, FieldSet } from '@/components/ui/field'
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
-
-import { can } from '@/lib/can';
-import { ref } from 'vue';
+import FormActions from '@/components/custom/FormActions.vue';
 
 interface Props {
     permissions: Array<any>;
@@ -60,19 +49,12 @@ const breadcrumbs: BreadcrumbItem[] = [
                     <FieldSet>
                         <FieldGroup>
                             <Field>
-                                <FieldLabel for="name">
-                                    Name
-                                </FieldLabel>
+                                <FieldLabel for="name">Name</FieldLabel>
                                 <Input id="name" placeholder="Name" required name="name"/>
-                                <FieldDescription v-if="errors.name" class="text-red-500">
-                                    {{ errors.name }}
-                                </FieldDescription>
+                                <FieldDescription v-if="errors.name" class="text-red-500">{{ errors.name }}</FieldDescription>
                             </Field>
                             <Field>
-                                <FieldLabel for="permissions">
-                                    Permissions
-                                </FieldLabel>
-
+                                <FieldLabel for="permissions">Permissions</FieldLabel>
                                 <div v-for="permission in props.permissions" :key="permission.id">
                                     <Label class="hover:bg-accent/50 flex items-start gap-3 rounded-lg border p-3 has-[[aria-checked=true]]:border-blue-600 has-[[aria-checked=true]]:bg-blue-50 dark:has-[[aria-checked=true]]:border-blue-900 dark:has-[[aria-checked=true]]:bg-blue-950">
                                         <Checkbox :id="`permission-${permission.id}`" :value="permission.id" :name="`permissions[${permission.id}]`" class="data-[state=checked]:border-blue-600 data-[state=checked]:bg-blue-600 data-[state=checked]:text-white dark:data-[state=checked]:border-blue-700 dark:data-[state=checked]:bg-blue-700"/>
@@ -86,24 +68,13 @@ const breadcrumbs: BreadcrumbItem[] = [
                                         </div>
                                     </Label>
                                 </div>
-                                
                                 <FieldDescription v-if="errors.permissions" class="text-red-500">
                                     {{ errors.permissions }}
                                 </FieldDescription>
                             </Field>
                         </FieldGroup>
                     </FieldSet>
-                    <Field orientation="horizontal">
-                        <Button type="submit">
-                            <Spinner class="animate-spin" v-if="processing"/>
-                            Save
-                        </Button>
-                        <Link href="/roles">
-                            <Button variant="outline" type="button">
-                                Cancel
-                            </Button>
-                        </Link>
-                    </Field>
+                    <FormActions :processing="processing" :can-edit-permission="'roles.create'" back-href="/roles"/>
                 </FieldGroup>
             </Form>
         </div>
